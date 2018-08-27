@@ -11,7 +11,7 @@
               <v-toolbar-title>Meetup QAにようこそ</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-btn block color="primary" dark>Googleアカウントでログインする</v-btn>
+              <v-btn block color="primary" dark @click="googleSignIn">Googleアカウントでログインする</v-btn>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -26,7 +26,7 @@ import firebase from 'firebase'
 export default {
   async mounted () {
     const authData = await new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged((authData) => resolve(authData || null))
+      firebase.auth().onAuthStateChanged((authData) => resolve(authData))
     })
     if (authData) {
       this.$store.dispatch('auth/setAuth', authData)

@@ -34,7 +34,7 @@ export default {
       commit('init', [])
     },
     fetch: ({ commit }) => {
-      groupsRef.get()
+      groupsRef.orderBy('createdAt', 'desc').get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             commit('add', { id: doc.id, ...doc.data() })

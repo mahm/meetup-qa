@@ -6,7 +6,7 @@ const db = app.firestore()
 const groupsRef = db.collection('groups')
 
 async function getComments (groupId, questionId) {
-  return await groupsRef.doc(groupId).collection(`questions/${questionId}/comments`).get()
+  return await groupsRef.doc(groupId).collection(`questions/${questionId}/comments`).orderBy('createdAt', 'asc').get()
     .then((querySnapshot) => {
       let comments = []
       querySnapshot.forEach((doc) => {
@@ -66,7 +66,7 @@ export default {
         this.unsubscribe()
         this.unsubscribe = null
       }
-      groupsRef.doc(groupId).collection('questions')
+      groupsRef.doc(groupId).collection('questions').orderBy('createdAt', 'desc')
         .onSnapshot(querySnapshot => {
           querySnapshot.docChanges().forEach(async change => {
             const comments = await getComments(groupId, change.doc.id)

@@ -1,9 +1,18 @@
-export const state = () => ({
-  sidebar: false
-})
+import Vue from 'vue'
+import Vuex from 'vuex'
+import layout from './modules/layout'
+import createLogger from 'vuex/dist/logger'
 
-export const mutations = {
-  toggleSidebar (state) {
-    state.sidebar = !state.sidebar
-  }
+Vue.use(Vuex)
+
+const debug = process.env.NODE_ENV !== 'production'
+Vue.config.debug = debug
+
+const createStore = () => {
+  return new Vuex.Store({
+    modules: { layout },
+    strict: false,
+    plugins: debug ? [createLogger()] : []
+  })
 }
+export default createStore

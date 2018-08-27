@@ -6,14 +6,14 @@
           <router-link to="/">トップ</router-link>
         </v-breadcrumbs-item>
         <v-breadcrumbs-item>
-          meetup.title
+          {{ group.name }}
         </v-breadcrumbs-item>
       </v-breadcrumbs>
     </v-flex>
     <v-flex xs8 offset-xs2 mb-3>
       <v-card>
         <v-toolbar color="secondary">
-          <v-toolbar-title>meetup.title</v-toolbar-title>
+          <v-toolbar-title>{{ group.name }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
           <v-textarea label="質問をここに書いてね"></v-textarea>
@@ -22,9 +22,9 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs8 offset-xs2 mb-3>
+    <v-flex xs8 offset-xs2 mb-3 v-for="question in questions" :key="question.id">
       <question-card
-        :question="sampleData"
+        :question="question"
         @send-message="sendComment"
         >
       </question-card>
@@ -35,43 +35,25 @@
 <script>
 import QuestionCard from '~/components/QuestionCard'
 
-const sampleData = {
-  id: "question-1",
-  owner: {
-    name: "質問をした人",
-    photoURL: ""
-  },
-  body: "fetch メソッドは、ページがレンダリングされる前に、データをストアに入れるために使われます。コンポーネントのデータをセットしないという点を除いては asyncData メソッドとよく似ています。",
-  createdAt: "2018/9/2 18:00",
-  updatedAt: "2018/9/2 18:00",
-  comments: [
-    {
-      id: "comment-1-1",
-      owner: {
-        name: "コメントをした人",
-        photoURL: ""
-      },
-      body: "ヘッダーはそのままでサイドバーの項目だけページ毎に変えたいときも1つのレイアウトcomponentでまかなえました",
-      createdAt: "2018/9/2 18:00",
-      updatedAt: "2018/9/2 18:00"
-    }
-  ]
-}
-
-console.log(sampleData.owner.name)
-
 export default {
+  async fetch ({ store, params }) {
+    store.dispatch('questions/clear')
+    store.dispatch('questions/startListener', params.id)
+  },
   components: {
     QuestionCard
-  },
-  data () {
-    return {
-      sampleData: sampleData
-    }
   },
   methods: {
     sendComment (commentBody) {
       console.log(commentBody)
+    }
+  },
+  computed: {
+    group () {
+      return this.$store.getters['groups/groupData'](this.$route.params.id)
+    },
+    questions () {
+      return this.$store.getters['questions/data']
     }
   }
 }

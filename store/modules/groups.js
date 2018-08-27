@@ -22,6 +22,11 @@ export default {
   getters: {
     data (state) {
       return state.data
+    },
+    groupData (state) {
+      return (groupId) => {
+        return state.data.find((group) => { return group.id === groupId })
+      }
     }
   },
   actions: {

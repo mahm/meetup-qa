@@ -19,6 +19,12 @@ export default {
     },
     isAuthenticated: (state) => {
       return Object.keys(state.data).length
+    },
+    ownerAttributes: (state) => {
+      return {
+        name: state.data.name,
+        photoURL: state.data.photoURL
+      }
     }
   },
   actions: {

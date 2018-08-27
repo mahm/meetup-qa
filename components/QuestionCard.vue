@@ -3,7 +3,7 @@
     <v-card-title primary-title>
       <v-avatar size="24" color="grey lighten-4"></v-avatar>
       <span>{{ question.owner.name }} さんからの質問です</span>
-      <span class="caption">{{ question.createdAt }}</span>
+      <span class="caption">({{ displayDate(question.createdAt) }})</span>
     </v-card-title>
     <v-card-text>
       <p>{{ question.body }}</p>
@@ -13,7 +13,7 @@
     <v-card-text v-for="comment in question.comments" :key="comment.id">
       <div>
         <v-avatar size="24" color="grey lighten-4"></v-avatar> {{ comment.owner.name }} さん
-        <span class="caption">{{ comment.createdAt }}</span>
+        <span class="caption">({{ displayDate(comment.createdAt) }})</span>
       </div>
       <p>{{ comment.body }}</p>
       <v-divider mt-3></v-divider>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { format } from 'date-fns'
+
 export default {
   props: {
     question: Object
@@ -46,6 +48,9 @@ export default {
     sendMessage () {
       this.$emit('send-message', this.$data.commentBody)
       this.$data.commentBody = ''
+    },
+    displayDate (timestamp) {
+      return format(timestamp.toDate(), 'YYYY/MM/DD HH:mm:ss')
     }
   }
 }

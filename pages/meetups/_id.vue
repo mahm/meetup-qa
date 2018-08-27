@@ -17,7 +17,7 @@
         </v-toolbar>
         <v-card-text>
           <v-textarea v-model="question.body" label="質問をここに書いてね"></v-textarea>
-          <v-btn color="primary" large @click="sendQuestion">送信する</v-btn>
+          <v-btn color="primary" large @click="sendQuestion">送信する</v-btn>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -34,6 +34,7 @@
 
 <script>
 import QuestionCard from '~/components/QuestionCard'
+import _ from 'lodash'
 
 export default {
   async fetch ({ store, params }) {
@@ -68,7 +69,7 @@ export default {
       return this.$store.getters['groups/groupData'](this.$route.params.id)
     },
     questions () {
-      return this.$store.getters['questions/data']
+      return _.sortBy(this.$store.getters['questions/data'], question => question.createdAt).reverse()
     }
   }
 }

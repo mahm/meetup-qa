@@ -66,7 +66,7 @@ export default {
         this.unsubscribe()
         this.unsubscribe = null
       }
-      groupsRef.doc(groupId).collection('questions').orderBy('createdAt', 'desc')
+      groupsRef.doc(groupId).collection('questions')
         .onSnapshot(querySnapshot => {
           querySnapshot.docChanges().forEach(async change => {
             const comments = await getComments(groupId, change.doc.id)

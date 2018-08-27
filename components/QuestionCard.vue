@@ -39,6 +39,7 @@
 
 <script>
 import { format } from 'date-fns'
+import _ from 'lodash'
 
 export default {
   props: {
@@ -51,6 +52,7 @@ export default {
   },
   methods: {
     sendMessage () {
+      if (this.$data.commentBody === '') { return }
       const payload = {
         questionId: this.question.id,
         commentBody: this.$data.commentBody
@@ -61,6 +63,11 @@ export default {
     displayDate (timestamp) {
       if (!timestamp) { return '' }
       return format(timestamp.toDate(), 'YYYY/MM/DD HH:mm:ss')
+    }
+  },
+  computed: {
+    sortedComments () {
+      return _.sortBy(this.question.comments, comment => comment.createdAt)
     }
   }
 }

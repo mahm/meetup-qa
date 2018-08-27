@@ -12,6 +12,8 @@
     "deploy": "yarn run build && firebase deploy"
   },
   "dependencies": {
+    "@nuxtjs/dotenv": "^1.1.1",
+    "firebase": "^5.4.1",
     "nuxt": "^1.0.0",
     "vuetify": "^1.0.0"
   },

@@ -51,7 +51,11 @@ export default {
   },
   methods: {
     sendMessage () {
-      this.$emit('send-message', this.$data.commentBody)
+      const payload = {
+        questionId: this.question.id,
+        commentBody: this.$data.commentBody
+      }
+      this.$emit('send-message', payload)
       this.$data.commentBody = ''
     },
     displayDate (timestamp) {

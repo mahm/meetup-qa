@@ -102,13 +102,34 @@ export default {
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }
-      console.log(_payload)
-      console.log(state.groupId)
       groupsRef.doc(state.groupId).collection('questions').add(_payload)
         .then(doc => {
           // nothing
         })
         .catch(e => console.log('questions/add error: ', e))
+    },
+    addComment ({ state, rootGetters, dispatch }, payload) {
+      const _payload = {
+        body: payload.commentBody,
+        owner: rootGetters['auth/ownerAttributes'],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
+      groupsRef.doc(state.groupId).collection(`questions/${payload.questionId}/comments`).add(_payload)
+      .then(doc => {
+        dispatch('touchQuestion', { questionId: payload.questionId })
+      })
+      .catch(e => console.log('questions/addComment error: ', e))
+    },
+    touchQuestion ({ state }, payload) {
+      const _payload = {
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
+      groupsRef.doc(state.groupId).collection('questions').doc(payload.questionId).set(_payload, { merge: true })
+      .then(doc => {
+        // nothing
+      })
+      .catch(e => console.log('questions/touchQuestion error: ', e))
     },
     delete ({ state }, payload) {
       groupsRef.doc(state.groupId).collection('questions').doc(payload.id).delete()

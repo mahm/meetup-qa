@@ -51,8 +51,11 @@ export default {
     }
   },
   methods: {
-    sendComment (commentBody) {
-      console.log(commentBody)
+    sendComment ({ questionId, commentBody }) {
+      const payload = { questionId, commentBody }
+      this.$store.dispatch('questions/addComment', payload).then(() => {
+        console.log(commentBody)
+      })
     },
     sendQuestion (questionBody) {
       this.$store.dispatch('questions/add', this.$data.question).then(() => {

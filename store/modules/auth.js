@@ -22,7 +22,7 @@ export default {
     },
     ownerAttributes: (state) => {
       return {
-        name: state.data.name,
+        name: state.data.displayName,
         photoURL: state.data.photoURL
       }
     }

@@ -1,7 +1,9 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <v-avatar size="24" color="grey lighten-4"></v-avatar>
+      <v-avatar size="24" color="grey lighten-4">
+        <img :src="question.owner.photoURL">
+      </v-avatar>
       <span>{{ question.owner.name }} さんからの質問です</span>
       <span class="caption">({{ displayDate(question.createdAt) }})</span>
     </v-card-title>
@@ -12,7 +14,10 @@
 
     <v-card-text v-for="comment in question.comments" :key="comment.id">
       <div>
-        <v-avatar size="24" color="grey lighten-4"></v-avatar> {{ comment.owner.name }} さん
+        <v-avatar size="24" color="grey lighten-4">
+          <img :src="comment.owner.photoURL">
+        </v-avatar>
+        {{ comment.owner.name }} さん
         <span class="caption">({{ displayDate(comment.createdAt) }})</span>
       </div>
       <p>{{ comment.body }}</p>
@@ -50,6 +55,7 @@ export default {
       this.$data.commentBody = ''
     },
     displayDate (timestamp) {
+      if (!timestamp) { return '' }
       return format(timestamp.toDate(), 'YYYY/MM/DD HH:mm:ss')
     }
   }

@@ -16,8 +16,8 @@
           <v-toolbar-title>{{ group.name }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-          <v-textarea label="質問をここに書いてね"></v-textarea>
-          <v-btn color="primary" large>送信する</v-btn>
+          <v-textarea v-model="question.body" label="質問をここに書いてね"></v-textarea>
+          <v-btn color="primary" large @click="sendQuestion">送信する</v-btn>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -37,15 +37,27 @@ import QuestionCard from '~/components/QuestionCard'
 
 export default {
   async fetch ({ store, params }) {
-    store.dispatch('questions/clear')
+    store.dispatch('questions/clear', params.id)
     store.dispatch('questions/startListener', params.id)
   },
   components: {
     QuestionCard
   },
+  data () {
+    return {
+      question: {
+        body: ''
+      }
+    }
+  },
   methods: {
     sendComment (commentBody) {
       console.log(commentBody)
+    },
+    sendQuestion (questionBody) {
+      this.$store.dispatch('questions/add', this.$data.question).then(() => {
+        this.$data.question.body = ''
+      })
     }
   },
   computed: {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { app } from '~/plugins/firebase'
+import firebase from 'firebase'
 
 const db = app.firestore()
 const groupsRef = db.collection('groups')
@@ -96,9 +97,13 @@ export default {
     },
     add ({ state, rootGetters }, payload) {
       const _payload = {
-        title: payload.title,
-        owner: rootGetters['user/ownerAttributes']
+        body: payload.body,
+        owner: rootGetters['auth/ownerAttributes'],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }
+      console.log(_payload)
+      console.log(state.groupId)
       groupsRef.doc(state.groupId).collection('questions').add(_payload)
         .then(doc => {
           // nothing

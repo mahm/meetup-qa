@@ -10,7 +10,7 @@
         </v-breadcrumbs-item>
       </v-breadcrumbs>
     </v-flex>
-    <v-flex xs8 offset-xs2 mb-3>
+    <v-flex sm12 md8 offset-md2 mb-3>
       <v-card>
         <v-toolbar color="secondary">
           <v-toolbar-title>{{ group.name }}</v-toolbar-title>
@@ -22,7 +22,7 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs8 offset-xs2 mb-3 v-for="question in questions" :key="question.id">
+    <v-flex sm12 md8 offset-md2 mb-3 v-for="question in questions" :key="question.id">
       <question-card
         :question="question"
         @send-message="sendComment"
